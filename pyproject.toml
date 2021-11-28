@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "customer-manager"
+version = "0.1.0"
+description = ""
+authors = ["Paulo Moura <paulociecomp@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.70.0"
+uvicorn = "^0.15.0"
+alembic = "^1.7.5"
+psycopg2 = "^2.9.2"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^6.2.5"
+requests = "^2.26.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
