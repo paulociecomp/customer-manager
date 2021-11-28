@@ -5,27 +5,24 @@ from app.api.customer.customer_data import CustomerData
 router = APIRouter()
 
 
-@router.post("/customers", status_code=status.HTTP_201_CREATED)
+@router.post("/customers", status_code=status.HTTP_201_CREATED, response_model=CustomerData)
 async def create(customerData: CustomerData):
-    customer = await Customer.create(
-        corporate_name=customerData.corporate_name,
-        phone=customerData.phone,
-        revenue=customerData.revenue)
-    return customer.to_dict()
+    customer = await Customer.create(**customerData.dict())
+    return CustomerData(**customer.to_dict())
 
 
-@router.get("/customers/{customer_id}", status_code=status.HTTP_200_OK)
+@router.get("/customers/{customer_id}", status_code=status.HTTP_200_OK, response_model=CustomerData)
 async def show(customer_id: int):
     customer = await Customer.get_or_404(customer_id)
-    return customer.to_dict()
+    return CustomerData(**customer.to_dict())
 
 
-@router.put("/customers/{customer_id}", status_code=status.HTTP_201_CREATED)
+@router.put("/customers/{customer_id}", status_code=status.HTTP_201_CREATED, response_model=CustomerData)
 async def update(customer_id: int, customerData: CustomerData):
     customer = await Customer.get_or_404(customer_id)
 
     customer.update(**customerData.dict()).apply()
-    return customer.to_dict()
+    return CustomerData(**customer.to_dict())
 
 
 @router.delete("/customers/{customer_id}", status_code=status.HTTP_200_OK)
