@@ -1,5 +1,4 @@
-from app.api.customer.customer_data import CustomerData
-from fastapi import FastAPI, status
+from fastapi import FastAPI
 from config.config import settings
 import logging
 import logging.config
@@ -7,7 +6,7 @@ import yaml
 import os
 import time
 from app.infraestructure.database import db
-from app.domain.customer.customer_model import Customer
+from app.api.router import set_routes
 
 logger = logging.getLogger(__name__)
 
@@ -17,6 +16,7 @@ def create_app():
     app = FastAPI()
 
     db.init_app(app)
+    set_routes(app)
 
     return app
 
@@ -35,39 +35,3 @@ def __set_timezone():
 
 
 app = create_app()
-
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.post("/customers", status_code=status.HTTP_201_CREATED)
-async def create(customerData: CustomerData):
-    # breakpoint()
-    customer = await Customer.create(
-        corporate_name=customerData.corporate_name,
-        phone=customerData.phone,
-        revenue=customerData.revenue)
-    return customer.to_dict()
-
-
-@app.get("/customers/{customer_id}", status_code=status.HTTP_200_OK)
-async def show(customer_id: int):
-    customer = await Customer.get_or_404(customer_id)
-    return customer.to_dict()
-
-
-@app.put("/customers/{customer_id}", status_code=status.HTTP_201_CREATED)
-async def update(customer_id: int, customerData: CustomerData):
-    customer = await Customer.get_or_404(customer_id)
-
-    customer.update(**customerData.dict()).apply()
-    return customer.to_dict()
-
-
-@app.delete("/customers/{customer_id}", status_code=status.HTTP_200_OK)
-async def destroy(customer_id: int):
-    customer = await Customer.get_or_404(customer_id)
-    await customer.delete()
-    return ""
