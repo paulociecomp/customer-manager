@@ -1,0 +1,21 @@
+version: 1
+disable_existing_loggers: False
+
+root:
+    handlers: [console]
+
+loggers:
+    apscheduler:
+        level: ERROR
+        handlers: [console]
+        propagate: no
+
+handlers:
+    console:
+        class: logging.StreamHandler
+        formatter: customer_manager
+        stream: ext://sys.stdout
+
+formatters:
+    customer_manager:
+        format: "%(asctime)s %(levelname)s <%(module)s:%(lineno)s> fun=%(funcName)s() msg= %(message)s"
