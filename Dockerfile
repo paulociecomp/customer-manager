@@ -18,7 +18,5 @@ RUN poetry config virtualenvs.create false && \
 
 ENV ENV_FOR_DYNACONF=production
 
-ARG DATABASE
-
 # CMD ["poetry", "run", "uvicorn", "--host", "0.0.0.0", "--port", $PORT, "--reload", "app.api.main:app"]
 CMD poetry run uvicorn --host 0.0.0.0 --port $PORT --reload app.api.main:app

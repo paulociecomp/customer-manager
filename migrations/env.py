@@ -5,6 +5,7 @@ from sqlalchemy import pool
 from dynaconf import settings
 from app.infraestructure.database import db
 from app.domain.customer.customer_model import BaseModel
+from app.domain.bank.bank_model import BaseModel
 from os import getenv
 from alembic import context
 

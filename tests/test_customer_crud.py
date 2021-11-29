@@ -1,3 +1,6 @@
+from app.domain.customer.customer_model import Customer
+import asynctest
+import pytest
 
 payload = {
         "corporate_name":"My company",
@@ -12,10 +15,9 @@ payload = {
         "country": "brazil",
     }
 
-def test_create(test_client):
-    
-
-    response = test_client.post("/customers", json=payload)
+@pytest.mark.asyncio
+async def test_create(test_client):
+    response = await test_client.post("/customers", json=payload)
 
     assert response.status_code == 201
     assert response.json()['corporate_name'] == 'My company'
@@ -30,12 +32,11 @@ def test_create(test_client):
     assert response.json()['country'] == "brazil"
 
 
-def test_show(test_client):
-    response = test_client.post("/customers", json=payload)
+@pytest.mark.asyncio
+async def test_show(test_client):
+    customer = await Customer.create(**payload)
 
-    customer_id = response.json()['id']
-
-    response = test_client.get(f'/customers/{customer_id}')
+    response = await test_client.get(f'/customers/{customer.id}')
 
     assert response.status_code == 200
     assert response.json()['corporate_name'] == 'My company'
@@ -50,7 +51,8 @@ def test_show(test_client):
     assert response.json()['country'] == "brazil"
 
 
-def test_update(test_client):
+@pytest.mark.asyncio
+async def test_update(test_client):
     payload = {
         "corporate_name":"My New Company",
         "phone": "55 9197643433",
@@ -64,11 +66,9 @@ def test_update(test_client):
         "country": "brazil",
     }
 
-    response = test_client.post("/customers", json=payload)
+    customer = await Customer.create(**payload)
 
-    customer_id = response.json()['id']
-
-    response = test_client.put(f'/customers/{customer_id}', json=payload)
+    response = await test_client.put(f'/customers/{customer.id}', json=payload)
 
     assert response.status_code == 201
     assert response.json()['corporate_name'] == 'My New Company'
@@ -83,15 +83,14 @@ def test_update(test_client):
     assert response.json()['country'] == "brazil"
 
 
-def test_delete(test_client):
-    response = test_client.post("/customers", json=payload)
+@pytest.mark.asyncio
+async def test_delete(test_client):
+    customer = await Customer.create(**payload)
 
-    customer_id = response.json()['id']
-
-    response = test_client.delete(f'/customers/{customer_id}')
+    response = await test_client.delete(f'/customers/{customer.id}')
 
     assert response.status_code == 200
 
-    response = test_client.get(f'/customers/{customer_id}')
+    response = await test_client.get(f'/customers/{customer.id}')
 
     assert response.status_code == 404
