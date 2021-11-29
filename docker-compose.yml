@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  customer_manager:
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    environment:
+      - PORT=8432
+    image: customer-manager-api-dev
+    volumes:
+      - .:/app
+    ports:
+      - "8432:8432"
+    network_mode: host
