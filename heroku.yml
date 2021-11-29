@@ -1,0 +1,13 @@
+setup:
+  addons:
+    - plan: heroku-postgresql:hobby-dev
+      as: DATABASE
+build:
+  docker:
+    web: Dockerfile
+  config:
+    ENV_FOR_DYNACONF: production
+release:
+  command:
+    - ./bin/deployment-tasks.sh
+  image: web
