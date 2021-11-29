@@ -6,7 +6,7 @@ default:
     title: Customers Manager
 
   database:
-    uri: postgresql://customer_manager_adm:customer_manager_adm@localhost:5439/db_customer_manager
+    uri: postgresql://customer_manager_adm:customer_manager_adm@0.0.0.0:5439/db_customer_manager
     schema: customer_manager
 
 production:

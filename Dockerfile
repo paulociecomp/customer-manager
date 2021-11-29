@@ -13,7 +13,8 @@ COPY . /src
 
 WORKDIR /src
 
-RUN poetry install
+RUN poetry config virtualenvs.create false && \
+  poetry install --no-dev --no-interaction --no-ansi
 
 ARG ENV_FOR_DYNACONF
 
