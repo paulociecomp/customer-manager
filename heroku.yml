@@ -11,3 +11,4 @@ release:
   command:
     - ./bin/deployment-tasks.sh
   image: web
+  

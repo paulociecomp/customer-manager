@@ -16,10 +16,9 @@ WORKDIR /src
 RUN poetry config virtualenvs.create false && \
   poetry install --no-dev --no-interaction --no-ansi
 
-ARG ENV_FOR_DYNACONF
+ENV ENV_FOR_DYNACONF=production
 
 ARG DATABASE
 
-CMD ["poetry", "run", "uvicorn", "--host", "0.0.0.0", "--port", "6100", "--reload", "app.api.main:app"]
-
-EXPOSE 6100
+# CMD ["poetry", "run", "uvicorn", "--host", "0.0.0.0", "--port", $PORT, "--reload", "app.api.main:app"]
+CMD poetry run uvicorn --host 0.0.0.0 --port $PORT --reload app.api.main:app

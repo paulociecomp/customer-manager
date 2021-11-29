@@ -5,7 +5,7 @@ from sqlalchemy import pool
 from dynaconf import settings
 from app.infraestructure.database import db
 from app.domain.customer.customer_model import BaseModel
-
+from os import getenv
 from alembic import context
 
 # this is the Alembic Config object, which provides
@@ -21,7 +21,8 @@ fileConfig(config.config_file_name)
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 target_metadata = db
-config.set_main_option("sqlalchemy.url", settings.DATABASE.URI)
+DATABASE_URL = getenv('DATABASE_URL') if getenv('ENV_FOR_DYNACONF')  == 'production' else settings.DATABASE.URI
+config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
