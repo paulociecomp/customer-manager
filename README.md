@@ -8,11 +8,16 @@ Para rodar o projeto é necessaŕio ter instalado o docker e o docker-compose.
 ./bin/start_database.sh
 ```
 
+### Caso seja necessário, dê permissão de execução ao script do banco
+
+```
+chmod +x bin/start_database.sh
+```
+
 ### Para rodar as migrations
 ```
 docker-compose run --rm customer_manager poetry run alembic upgrade head
 ```
-
 
 ### Para rodar os testes
 ```
